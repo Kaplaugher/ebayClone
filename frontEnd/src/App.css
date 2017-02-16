@@ -1,0 +1,66 @@
+.App {
+  text-align: center;
+  font-family: Julius Sans One, Josefin Sans, Sans Serif;
+}
+
+.App-logo {
+  animation: globe-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.header{
+  background-color: #E6E6FA;
+  text-align: left;  position: fixed;
+  z-index: 9999
+}
+
+.category-header{
+  margin-top: 90px;
+}
+
+.navbar{
+  margin-bottom: -25px;
+}
+
+#searchbar{
+  width: 40vw;
+}
+
+#form{
+  padding-top: 1vh;
+
+}
+
+#auction-image{
+  height: 35vh;
+  width: 25vw;
+}
+#brand{
+  height: 10vh;
+  width: 10vw;
+}
+
+.auction-item{
+  margin: 20px;
+}
+
+.carousel-image{
+  height: 30vh;
+  width: 50vw;
+}
+
+
+
+
+
+@keyframes globe-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
