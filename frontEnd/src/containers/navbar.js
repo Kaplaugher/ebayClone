@@ -8,7 +8,8 @@ import {
     Nav,
     NavItem,
     MenuItem,
-    NavDropdown
+    NavDropdown,
+    handleSelect
 } from 'react-bootstrap';
 // import { bindActionCreators } from 'redux';
 import {Link} from 'react-router';
@@ -26,23 +27,35 @@ class Navbar1 extends Component {
 
     render() {
         return (
-            <Navbar>
-                <Navbar.Header>
-                    <Navbar.Brand>
-                      <img id="brand" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/2000px-EBay_logo.svg.png" alt="" />
-                    </Navbar.Brand>
-                    <Navbar.Toggle/>
-                </Navbar.Header>
-                <Navbar.Collapse>
-                    <Navbar.Form center id="form">
-                        <FormGroup>
-                            <FormControl type="text" id="searchbar" placeholder="Search"/>
-                        </FormGroup>
-                        {' '}
-                        <Button type="submit">Submit</Button>
-                    </Navbar.Form>
-                </Navbar.Collapse>
-            </Navbar>
+            <div className="navs">
+                <Navbar>
+                    <Navbar.Header>
+                        <Navbar.Brand>
+                            <img id="brand" src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/2000px-EBay_logo.svg.png" alt=""/>
+                        </Navbar.Brand>
+                        <Navbar.Toggle/>
+                    </Navbar.Header>
+                    <Navbar.Collapse>
+                        <Navbar.Form id="form">
+                            <FormGroup>
+                                <FormControl type="text" id="searchbar" placeholder="Search"/>
+                            </FormGroup>
+                            {' '}
+                            <Button type="submit">Submit</Button>
+                              <Navbar.Text pullRight id="navbar-text">
+                                  Welcome
+                                  <Navbar.Link href="/">{}</Navbar.Link>
+                              </Navbar.Text>
+                        </Navbar.Form>
+                    </Navbar.Collapse>
+                </Navbar>
+                <hr></hr>
+                <Nav className="links text-center">
+
+                </Nav>
+
+                <hr></hr>
+            </div>
         )
     }
 }

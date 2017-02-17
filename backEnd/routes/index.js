@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var config = require ('../config/config');
 var mysql = require('mysql');
+var randtoken = require('rand-token');
 var connection = mysql.createConnection({
 	host: config.host,
 	user: config.username,
@@ -38,6 +39,15 @@ router.get('/getHomeAuctions', function(req, res, next) {
 	});
 });
 
+// Get a single auction's data based on the ID in teh URL
+router.get('/getAuctionItem/:auctionId', (req, res, next)=>{
+	var theAuctionId = req.params.auctionId;
+	var getAuctionQuery = "SELECT * FROM auctions WHERE id = ?";
+	connection.query(getAuctionQuery,[theAuctionId],(error, results, fields)=>{
+		res.json(results);
+	});
+});
+
 // Make a register post route to handle registration!
 router.post('/register', (req, res, next)=>{
 	checkDupeUserQuery = "SELECT * FROM users WHERE username = ?";
@@ -59,21 +69,47 @@ router.post('/register', (req, res, next)=>{
 	})
 });
 
-router.post('/login', (req,res,next)=>{
+router.post('/login', (req, res, next)=>{
 	var username = req.body.username;
 	var password = req.body.password;
-	var findUserQuery = "SELECT * FROM users WHERE username = ?";
-	connection.query(findUserQuery,[username], (error,results)=>{
-		if (error) throw error;
+	var findUserQuery = "SELECT password FROM users WHERE username = ?";
+	connection.query(findUserQuery,[req.body.username], (error, results, fields)=>{
 		if(results.length === 0){
+			// This is not a valid username!!!
 			res.json({
-				msg: "badUserName"
+				msg: "badUsername"
 			});
 		}else{
+			// this is a valid username (we know because results.length > 0);
 			checkHash = bcrypt.compareSync(password, results[0].password);
+			console.log("######################")
+			console.log(checkHash);
+			console.log("######################")
+			if(checkHash === false){
+				res.json({
+					msg: "badPassword"
+				})
+			}else{
+				// We have a match on username, and the hash password checks out
+				// this is teh droid we're looking for
+				var token = randtoken.uid(40);
+				insertToken = "UPDATE users SET token=?, token_exp=DATE_ADD(NOW(), INTERVAL 1 HOUR) "+
+					"WHERE username=?";
+				connection.query(insertToken,[token, username], (error, results)=>{
+					console.log(token);
+					res.json({
+						msg: "foundUser",
+						token: token
+					});
+				});
+			}
 		}
-	})
+	});
 	// res.json(req.body);
+});
+
+router.post('/submitBid', (req, res, next)=>{
+	res.json(req.body);
 })
 
 module.exports = router;
